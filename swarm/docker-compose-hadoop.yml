@@ -22,6 +22,7 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 50070
+        traefik.frontend.rule: Host:hadoop-namenode
     ports:
       - 50070:50070
       - 9000:9000
@@ -49,6 +50,7 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 50075
+        traefik.frontend.rule: Host:hadoop-datanode
 #    ports:
 #      - 50075:50075
   
