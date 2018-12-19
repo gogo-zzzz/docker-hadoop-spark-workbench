@@ -49,6 +49,8 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 50075
+    ports:
+      - 50075:50075
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:1.1.0-hadoop2.7.1-java8
     networks:
