@@ -17,7 +17,7 @@ services:
         condition: on-failure
       # add placement constraint to allocate namenode on particular server
       placement:
-        constraints: node.role == manager]
+        constraints: [node.role == manager]
       labels:
         traefik.docker.network: workbench
         traefik.port: 50070
