@@ -64,11 +64,15 @@ services:
 
 volumes:
   datanode:
-    driver: local
-    source: /data/datanode    
+    driver_opts:
+      o: bind
+      type: local
+      device: /data/datanode    
   namenode:
-    driver: local
-    source: /data/namenode
+    driver_opts:
+      o: bind
+      type: local
+      device: /data/namenode
 #  hadoop_historyserver:
 
 networks:
