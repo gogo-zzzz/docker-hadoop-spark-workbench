@@ -50,7 +50,6 @@ services:
         traefik.port: 50075
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:1.1.0-hadoop2.7.1-java8
-    container_name: resourcemanager
     networks:
       - workbench
     depends_on:
@@ -76,7 +75,6 @@ services:
   
   historyserver:
     image: bde2020/hadoop-historyserver:1.1.0-hadoop2.7.1-java8
-    container_name: historyserver
     networks:
       - workbench
     depends_on:
@@ -105,8 +103,7 @@ services:
   nodemanager:
     image: bde2020/hadoop-nodemanager:1.1.0-hadoop2.7.1-java8
     networks:
-      - workbench    
-    container_name: nodemanager
+      - workbench
     depends_on:
       - namenode
       - datanode
@@ -131,6 +128,7 @@ services:
 volumes:
   datanode:
   namenode:
+  hadoop_historyserver:
 
 networks:
   workbench:
