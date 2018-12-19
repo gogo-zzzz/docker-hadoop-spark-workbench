@@ -23,7 +23,7 @@ services:
         traefik.docker.network: workbench
         traefik.port: 50070
     ports:
-      - 9000:9000
+      - 50070:50070
 
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
