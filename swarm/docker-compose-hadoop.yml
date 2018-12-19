@@ -64,7 +64,11 @@ services:
 
 volumes:
   datanode:
+    driver: local
+    source: /data/datanode    
   namenode:
+    driver: local
+    source: /data/namenode
 #  hadoop_historyserver:
 
 networks:
