@@ -26,8 +26,9 @@ services:
         # traefik.frontend.rule is the route rule, add this to http request head
         # traefil will route to 50070 port to this service
         # traefik.frontend.rule: Host:hadoop-namenode
+        traefik.frontend.rule: "PathPrefixStrip: /hadoop"
         # traefik.frontend.rule: "Path: /hadoop; ReplacePath: /"
-        traefik.frontend.rule: "Method: GET"
+        # traefik.frontend.rule: "Method: *"
     ports:
       - 50070:50070
       - 9000:9000
