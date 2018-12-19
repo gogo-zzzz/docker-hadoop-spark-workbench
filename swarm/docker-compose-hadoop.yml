@@ -40,12 +40,12 @@ services:
       # mode global will deploy one datanode per docker swarm node
       #mode: global
       mode: replicated
-      replicas: 1
+      replicas: 3
       restart_policy:
         condition: on-failure
       placement:
         constraints: 
-          - node.role == manager
+          - node.role == worker
       labels:
         traefik.docker.network: workbench
         traefik.port: 50075
