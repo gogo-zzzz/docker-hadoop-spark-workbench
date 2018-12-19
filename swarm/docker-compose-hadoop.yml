@@ -22,9 +22,9 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 50070
-    ports:
-      - 50070:50070
-      - 9000:9000
+#    ports:
+#      - 50070:50070
+#      - 9000:9000
 
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
@@ -50,88 +50,14 @@ services:
         traefik.docker.network: workbench
         traefik.port: 50075
     ports:
-      - 50075:50075
-  resourcemanager:
-    image: bde2020/hadoop-resourcemanager:1.1.0-hadoop2.7.1-java8
-    networks:
-      - workbench
-    depends_on:
-      - namenode
-      - datanode
-    env_file:
-      - ./hadoop.env
-    deploy:
-      # mode global will deploy one datanode per docker swarm node
-      #mode: global
-      mode: replicated
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: 
-          - node.role == manager
-      labels:
-        traefik.docker.network: workbench
-        traefik.port: 8088
-    ports:
-        - 18088:8088
+#      - 50075:50075
   
-  historyserver:
-    image: bde2020/hadoop-historyserver:1.1.0-hadoop2.7.1-java8
-    networks:
-      - workbench
-    depends_on:
-      - namenode
-      - datanode
-    volumes:
-      - hadoop_historyserver:/hadoop/yarn/timeline
-    env_file:
-      - ./hadoop.env
-    deploy:
-      # mode global will deploy one datanode per docker swarm node
-      #mode: global
-      mode: replicated
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: 
-          - node.role == manager
-      labels:
-        traefik.docker.network: workbench
-        traefik.port: 8188
-    ports:
-        - 8188:8188
   
-  nodemanager:
-    image: bde2020/hadoop-nodemanager:1.1.0-hadoop2.7.1-java8
-    networks:
-      - workbench
-    depends_on:
-      - namenode
-      - datanode
-    env_file:
-      - ./hadoop.env
-    deploy:
-      # mode global will deploy one datanode per docker swarm node
-      #mode: global
-      mode: replicated
-      replicas: 1
-      restart_policy:
-        condition: on-failure
-      placement:
-        constraints: 
-          - node.role == manager
-      labels:
-        traefik.docker.network: workbench
-        traefik.port: 8042
-    ports:
-        - 8042:8042
 
 volumes:
   datanode:
   namenode:
-  hadoop_historyserver:
+#  hadoop_historyserver:
 
 networks:
   workbench:
