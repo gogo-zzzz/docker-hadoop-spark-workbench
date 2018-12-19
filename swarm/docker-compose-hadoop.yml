@@ -16,12 +16,14 @@ services:
       restart_policy:
         condition: on-failure
       # add placement constraint to allocate namenode on particular server
-      #placement:
-      #  constraints:
-      #    - node.hostname == master.node.com
+      placement:
+        constraints:
+          constraints: [node.role == manager]
       labels:
         traefik.docker.network: workbench
         traefik.port: 50070
+      ports:
+        - 9000:9000
 
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
@@ -35,12 +37,43 @@ services:
       SERVICE_PRECONDITION: "namenode:50070"
     deploy:
       # mode global will deploy one datanode per docker swarm node
-      mode: global
+      #mode: global
+      mode: replicated
+      replicas: 1
       restart_policy:
         condition: on-failure
+      constraints: [node.role == worker]
       labels:
         traefik.docker.network: workbench
         traefik.port: 50075
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:1.1.0-hadoop2.7.1-java8
+    container_name: resourcemanager
+    depends_on:
+      - namenode
+      - datanode
+    env_file:
+      - ./hadoop.env
+  
+  historyserver:
+    image: bde2020/hadoop-historyserver:1.1.0-hadoop2.7.1-java8
+    container_name: historyserver
+    depends_on:
+      - namenode
+      - datanode
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    env_file:
+      - ./hadoop.env
+  
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:1.1.0-hadoop2.7.1-java8
+    container_name: nodemanager
+    depends_on:
+      - namenode
+      - datanode
+    env_file:
+      - ./hadoop.env
 
 volumes:
   datanode:

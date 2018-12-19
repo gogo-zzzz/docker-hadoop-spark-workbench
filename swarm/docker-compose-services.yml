@@ -16,6 +16,7 @@ services:
       mode: replicated
       restart_policy:
         condition: on-failure
+      constraints: [node.role == manager]
       labels:
         traefik.docker.network: workbench
         traefik.port: 8080
@@ -29,13 +30,16 @@ services:
       mode: replicated
       restart_policy:
         condition: on-failure
+      constraints: [node.role == manager]
       labels:
         traefik.docker.network: workbench
         traefik.port: 8088
-    environment:
+    environment:  
       - NAMENODE_HOST=namenode
     networks:
       - workbench
+    ports:
+      - 8088:8088
 
 volumes:
   zeppelinnotebooks:
