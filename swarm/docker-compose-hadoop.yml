@@ -22,7 +22,11 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 50070
-        traefik.frontend.rule: Host:hadoop-namenode
+        # important!!!
+        # traefik.frontend.rule is the route rule, add this to http request head
+        # traefil will route to 50070 port to this service
+        # traefik.frontend.rule: Host:hadoop-namenode
+        traefik.frontend.rule: "Path: /hadoop; ReplacePath: /"
     ports:
       - 50070:50070
       - 9000:9000
