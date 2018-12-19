@@ -17,7 +17,8 @@ services:
         condition: on-failure
       # add placement constraint to allocate namenode on particular server
       placement:
-        constraints: [node.role == manager]
+        constraints: 
+          - node.role == manager
       labels:
         traefik.docker.network: workbench
         traefik.port: 50070
@@ -41,22 +42,43 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-      constraints: [node.role == worker]
+      placement:
+        constraints: 
+          - node.role == manager
       labels:
         traefik.docker.network: workbench
         traefik.port: 50075
   resourcemanager:
     image: bde2020/hadoop-resourcemanager:1.1.0-hadoop2.7.1-java8
     container_name: resourcemanager
+    networks:
+      - workbench
     depends_on:
       - namenode
       - datanode
     env_file:
       - ./hadoop.env
+    deploy:
+      # mode global will deploy one datanode per docker swarm node
+      #mode: global
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.role == manager
+      labels:
+        traefik.docker.network: workbench
+        traefik.port: 8088
+      ports:
+          - 18088:8088
   
   historyserver:
     image: bde2020/hadoop-historyserver:1.1.0-hadoop2.7.1-java8
     container_name: historyserver
+    networks:
+      - workbench
     depends_on:
       - namenode
       - datanode
@@ -64,15 +86,47 @@ services:
       - hadoop_historyserver:/hadoop/yarn/timeline
     env_file:
       - ./hadoop.env
+    deploy:
+      # mode global will deploy one datanode per docker swarm node
+      #mode: global
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.role == manager
+      labels:
+        traefik.docker.network: workbench
+        traefik.port: 8188
+      ports:
+          - 8188:8188
   
   nodemanager:
     image: bde2020/hadoop-nodemanager:1.1.0-hadoop2.7.1-java8
+    networks:
+      - workbench    
     container_name: nodemanager
     depends_on:
       - namenode
       - datanode
     env_file:
       - ./hadoop.env
+    deploy:
+      # mode global will deploy one datanode per docker swarm node
+      #mode: global
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      placement:
+        constraints: 
+          - node.role == manager
+      labels:
+        traefik.docker.network: workbench
+        traefik.port: 8042
+      ports:
+          - 8042:8042
 
 volumes:
   datanode:
