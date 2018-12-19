@@ -1,0 +1,3 @@
+systemctl disable kubelet
+systemctl stop kubelet
+docker rm -f $(docker ps -a -q)

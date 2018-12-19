@@ -49,7 +49,7 @@ services:
       labels:
         traefik.docker.network: workbench
         traefik.port: 50075
-    ports:
+#    ports:
 #      - 50075:50075
   
   
